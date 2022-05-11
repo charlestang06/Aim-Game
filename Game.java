@@ -50,7 +50,7 @@ public class Game implements Runnable {
 			public void actionPerformed(ActionEvent e) {
 				String cmd = e.getActionCommand();
 				if (cmd.equals("Play")) {
-
+					startFrame.setVisible(false);
 					Game newGame = new Game(highest_score);
 					Thread gamethread = new Thread(newGame);
 					gamethread.start();
@@ -97,10 +97,10 @@ public class Game implements Runnable {
 	 *                Sleeps the program for however many seconds for the user to
 	 *                click the circle
 	 */
-	public void wait(int seconds) {
+	public void wait(int tenth_of_seconds) {
 		try {
-			for (int i = 0; i < seconds; i++) {
-				Thread.sleep(1000);
+			for (int i = 0; i < tenth_of_seconds; i++) {
+				Thread.sleep(100);
 			}
 		} catch (Exception e) {
 			System.out.println(e);
@@ -120,32 +120,33 @@ public class Game implements Runnable {
 			int centerY = randY + radius;
 			Circle c = new Circle(radius, randX, randY);
 
-			// Mouse Listener
-			JPanel panel = new JPanel();
-			panel.addMouseListener(new MouseAdapter() {
+			// Mouse Listener			
+			c.addMouseListener(new MouseAdapter() {
+				@Override
 				public void mousePressed(MouseEvent e) {
 					int x = e.getX();
 					int y = e.getY();
-					// debug
 					if (Math.abs(centerX - x) * Math.abs(centerX - x)
 							+ Math.abs(centerY - y) * Math.abs(centerY - y) <= radius * radius) {
 						score++;
 						status = true;
+						mainframe.getContentPane().remove(c);
+						mainframe.revalidate();
+						mainframe.repaint();
 					}
 
 				}
 			});
-			mainframe.add(panel);
 			mainframe.getContentPane().add(c);
 			mainframe.setVisible(true);
-			wait(2);
+			
+			wait(8);
 
-			mainframe.getContentPane().remove(c);
-			mainframe.revalidate();
-			mainframe.repaint();
-		}
+		 }
 		highest_score = Math.max(score, highest_score);
 		curr_score = score;
 		System.out.println(highest_score);
+		mainframe.setVisible(false);
+		
 	}
 }
