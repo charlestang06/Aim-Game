@@ -7,6 +7,9 @@ import java.lang.Thread;
 
 public class Game implements Runnable {
 
+	/**
+	 * Instance variables
+	 */
 	private int highest_score;
 	private int score;
 	private int seconds;
@@ -51,6 +54,7 @@ public class Game implements Runnable {
 		panel.add(new JLabel("Click circles to gain score!"));
 		panel.add(new JLabel("Make sure to click them quickly!"));
 		panel.add(new JLabel("Highest Score: " + highest_score));
+		panel.setBackground(new Color((float) 255 / 255, (float) 226 / 255, (float) 174 / 255));
 
 		// speed slider
 		JLabel headerLabel = new JLabel("Speed Slider", JLabel.CENTER);
@@ -113,6 +117,9 @@ public class Game implements Runnable {
 
 	}
 
+	/**
+	 * Initializes the endscreen after failure
+	 */
 	public void endScreen() {
 		endFrame = new JFrame();
 		endFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -216,8 +223,7 @@ public class Game implements Runnable {
 	}
 
 	/**
-	 * @param seconds to sleep for Sleeps the program for however many seconds for
-	 *                the user to click the circle
+	 * @param tenths of seconds to sleep for Sleeps the program/waits
 	 */
 	public void wait(int tenth_of_seconds) {
 		try {
@@ -229,6 +235,10 @@ public class Game implements Runnable {
 		}
 	}
 
+	/**
+	 * The main function of the program, initializes the game and creates circle
+	 * objects through a while loop, checking for a mouse click each time
+	 */
 	public void play() {
 		int radius = (int) (50.0 / 3 * rad);
 		score = 0;
