@@ -4,6 +4,9 @@ import javax.swing.*;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.*;
 import java.lang.Thread;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
 
 public class Game implements Runnable {
 
@@ -14,17 +17,22 @@ public class Game implements Runnable {
 	private int score;
 	private int seconds;
 	private boolean status;
+	private double timeLeft;
+	private int startTime;
 
 	private JFrame startFrame;
 	private JFrame mainframe;
 	private JFrame endFrame;
+	private JLabel scoreCounter;
+	private Timer timer;
+	private JLabel timerLabel;
 
 	private double speed;
 	private int rad;
 
 	/**
-	 * Constructor for game initializes the startscreen, mainframe, score counter,
-	 * seconds past, and the game status
+	 * Constructor for game initializes the startscreen, mainframe, score
+	 * counter, seconds past, and the game status
 	 */
 	public Game(int h, double s, int r) {
 		highest_score = h;
@@ -32,6 +40,8 @@ public class Game implements Runnable {
 		status = true;
 		speed = s;
 		rad = r;
+		scoreCounter = new JLabel();
+		timerLabel = new JLabel();
 	}
 
 	/**
@@ -114,7 +124,6 @@ public class Game implements Runnable {
 		startFrame.add(panel);
 		startFrame.setVisible(true);
 		startFrame.setResizable(false);
-
 	}
 
 	/**
@@ -133,6 +142,7 @@ public class Game implements Runnable {
 		panel.setLayout(layout);
 		panel.add(new JLabel("Your score was " + score));
 		panel.add(new JLabel("Highest Score: " + highest_score));
+		panel.setBackground(new Color((float) 255 / 255, (float) 226 / 255, (float) 174 / 255));
 
 		// speed slider
 		JLabel headerLabel = new JLabel("Speed Slider", JLabel.CENTER);
@@ -220,10 +230,39 @@ public class Game implements Runnable {
 		mainframe.setSize(500, 500);
 		mainframe.setVisible(true);
 		mainframe.setResizable(false);
+
+		scoreCounter.setText("Score: 0");
+		scoreCounter.setVerticalAlignment(JLabel.TOP);
+		scoreCounter.setHorizontalAlignment(JLabel.LEFT);
+		mainframe.getContentPane().add(scoreCounter);
+
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("ss");
+		LocalDateTime now = LocalDateTime.now();
+		startTime = Integer.valueOf(dtf.format(now));
+		System.out.println(startTime);
+		timerLabel.setText(Integer.toString(startTime));
+
+		timeLeft = 0;
+		ActionListener counter = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				timeLeft += 1.2;
+				timerLabel.setText("Seconds: " + (int) (timeLeft / 10));
+				if (timeLeft >= 10000000) {
+					timer.stop();
+				}
+			}
+		};
+		timer = new Timer(100, counter);
+		timer.setInitialDelay(0);
+		timerLabel.setVerticalAlignment(JLabel.TOP);
+		timerLabel.setHorizontalAlignment(JLabel.RIGHT);
+		mainframe.getContentPane().add(timerLabel);
+
 	}
 
 	/**
-	 * @param tenths of seconds to sleep for Sleeps the program/waits
+	 * @param tenths
+	 *               of seconds to sleep for Sleeps the program/waits
 	 */
 	public void wait(int tenth_of_seconds) {
 		try {
@@ -243,7 +282,10 @@ public class Game implements Runnable {
 		int radius = (int) (50.0 / 3 * rad);
 		score = 0;
 		status = true;
+		timer.start();
+
 		while (status) {
+
 			status = false;
 
 			int randX = (int) (Math.random() * (500 - 2 * radius));
@@ -262,6 +304,7 @@ public class Game implements Runnable {
 							+ Math.abs(centerY - y) * Math.abs(centerY - y) <= radius * radius) {
 						score++;
 						status = true;
+						scoreCounter.setText("Score: " + score);
 						mainframe.getContentPane().remove(c);
 						mainframe.revalidate();
 						mainframe.repaint();
