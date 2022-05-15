@@ -1,12 +1,12 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.Toolkit;
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.*;
 import java.lang.Thread;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
-import java.time.LocalDateTime;
+
 
 public class Game implements Runnable {
 
@@ -18,14 +18,11 @@ public class Game implements Runnable {
 	private int seconds;
 	private boolean status;
 	private double timeLeft;
-	private int startTime;
 
 	private JFrame startFrame;
 	private JFrame mainframe;
 	private JFrame endFrame;
-	private JLabel scoreCounter;
 	private Timer timer;
-	private JLabel timerLabel;
 
 	private double speed;
 	private int rad;
@@ -40,8 +37,6 @@ public class Game implements Runnable {
 		status = true;
 		speed = s;
 		rad = r;
-		scoreCounter = new JLabel();
-		timerLabel = new JLabel();
 	}
 
 	/**
@@ -124,6 +119,7 @@ public class Game implements Runnable {
 		startFrame.add(panel);
 		startFrame.setVisible(true);
 		startFrame.setResizable(false);
+
 	}
 
 	/**
@@ -228,41 +224,18 @@ public class Game implements Runnable {
 		mainframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mainframe.setTitle("Aim Game - Game");
 		mainframe.setSize(500, 500);
+		Toolkit tkit=Toolkit.getDefaultToolkit();
+		ImageIcon icon = new ImageIcon("src\\R_50x50.png");
+		Image im1 = icon.getImage();
+		mainframe.setCursor(tkit.createCustomCursor(im1 , new Point(mainframe.getX(), 
+			      mainframe.getY()), "cursor"));
 		mainframe.setVisible(true);
 		mainframe.setResizable(false);
-
-		scoreCounter.setText("Score: 0");
-		scoreCounter.setVerticalAlignment(JLabel.TOP);
-		scoreCounter.setHorizontalAlignment(JLabel.LEFT);
-		mainframe.getContentPane().add(scoreCounter);
-
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("ss");
-		LocalDateTime now = LocalDateTime.now();
-		startTime = Integer.valueOf(dtf.format(now));
-		System.out.println(startTime);
-		timerLabel.setText(Integer.toString(startTime));
-
-		timeLeft = 0;
-		ActionListener counter = new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				timeLeft += 1.2;
-				timerLabel.setText("Seconds: " + (int) (timeLeft / 10));
-				if (timeLeft >= 10000000) {
-					timer.stop();
-				}
-			}
-		};
-		timer = new Timer(100, counter);
-		timer.setInitialDelay(0);
-		timerLabel.setVerticalAlignment(JLabel.TOP);
-		timerLabel.setHorizontalAlignment(JLabel.RIGHT);
-		mainframe.getContentPane().add(timerLabel);
-
 	}
 
 	/**
 	 * @param tenths
-	 *               of seconds to sleep for Sleeps the program/waits
+	 *            of seconds to sleep for Sleeps the program/waits
 	 */
 	public void wait(int tenth_of_seconds) {
 		try {
@@ -282,10 +255,36 @@ public class Game implements Runnable {
 		int radius = (int) (50.0 / 3 * rad);
 		score = 0;
 		status = true;
+		
+		//Seconds Label
+		JLabel jlabel1 = new JLabel();
+		timeLeft = 0;
+		ActionListener counter = new ActionListener()
+		{
+		    public void actionPerformed(ActionEvent e)
+		    {
+		    	timeLeft += 1.2;
+		        jlabel1.setText("Seconds: " + (int) (timeLeft / 10));
+		        if(timeLeft >= 1000)
+		        {
+		            timer.stop();
+		        }
+		    }
+		};
+		timer = new Timer(100, counter);
+		timer.setInitialDelay(0);
+		jlabel1.setVerticalAlignment(JLabel.TOP);
+		jlabel1.setHorizontalAlignment(JLabel.CENTER);
+		
+		// TODO: Fix bug where timer stops working when play again called
+
+		mainframe.getContentPane().add(jlabel1);
 		timer.start();
-
+		
 		while (status) {
-
+			
+			//TODO: implement score counter inside this loop 
+		
 			status = false;
 
 			int randX = (int) (Math.random() * (500 - 2 * radius));
@@ -304,7 +303,6 @@ public class Game implements Runnable {
 							+ Math.abs(centerY - y) * Math.abs(centerY - y) <= radius * radius) {
 						score++;
 						status = true;
-						scoreCounter.setText("Score: " + score);
 						mainframe.getContentPane().remove(c);
 						mainframe.revalidate();
 						mainframe.repaint();
@@ -318,9 +316,11 @@ public class Game implements Runnable {
 
 		}
 		highest_score = Math.max(score, highest_score);
-		System.out.println(highest_score);
+		timer.stop();
+		mainframe.getContentPane().remove(jlabel1);
 		mainframe.setVisible(false);
 		mainframe.dispose();
+		
 		endScreen();
 
 	}
