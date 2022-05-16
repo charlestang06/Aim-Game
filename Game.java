@@ -25,18 +25,18 @@ public class Game implements Runnable {
 	private Timer timer;
 
 	private double speed;
-	private int rad;
+	private int diam;
 
 	/**
-	 * Constructor for game initializes the startscreen, mainframe, score
+	 * Constructor for game initializes the startscreen, mainframe, score, diameter
 	 * counter, seconds past, and the game status
 	 */
-	public Game(int h, double s, int r) {
+	public Game(int h, double s, int d) {
 		highest_score = h;
 		seconds = 0;
 		status = true;
 		speed = s;
-		rad = r;
+		diam = d;
 	}
 
 	/**
@@ -87,12 +87,12 @@ public class Game implements Runnable {
 		slider1.setMajorTickSpacing(2);
 		slider1.setPaintTicks(true);
 		slider1.setPaintLabels(true);
-		slider1.setValue((int) rad);
+		slider1.setValue((int) diam);
 		slider1.setLabelTable(slider1.createStandardLabels(1));
 		slider1.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				rad = ((JSlider) e.getSource()).getValue();
+				diam = ((JSlider) e.getSource()).getValue();
 			}
 		});
 		panel.add(new JLabel(" "));
@@ -107,7 +107,7 @@ public class Game implements Runnable {
 				String cmd = e.getActionCommand();
 				if (cmd.equals("Play")) {
 					startFrame.dispose();
-					Game newGame = new Game(highest_score, speed, rad);
+					Game newGame = new Game(highest_score, speed, diam);
 					Thread gamethread = new Thread(newGame);
 					gamethread.start();
 				}
@@ -123,7 +123,7 @@ public class Game implements Runnable {
 	}
 
 	/**
-	 * Initializes the end-screen after failure
+	 * Initializes the endscreen after failure
 	 */
 	public void endScreen() {
 		endFrame = new JFrame();
@@ -166,12 +166,12 @@ public class Game implements Runnable {
 		slider1.setMajorTickSpacing(2);
 		slider1.setPaintTicks(true);
 		slider1.setPaintLabels(true);
-		slider1.setValue((int) rad);
+		slider1.setValue((int) diam);
 		slider1.setLabelTable(slider1.createStandardLabels(1));
 		slider1.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				rad = ((JSlider) e.getSource()).getValue();
+				diam = ((JSlider) e.getSource()).getValue();
 			}
 		});
 		panel.add(new JLabel(" "));
@@ -185,7 +185,7 @@ public class Game implements Runnable {
 				String cmd = e.getActionCommand();
 				if (cmd.equals("Play Again")) {
 					endFrame.dispose();
-					Game newGame = new Game(highest_score, speed, rad);
+					Game newGame = new Game(highest_score, speed, diam);
 					Thread gamethread = new Thread(newGame);
 					gamethread.start();
 				}
@@ -252,7 +252,7 @@ public class Game implements Runnable {
 	 * objects through a while loop, checking for a mouse click each time
 	 */
 	public void play() {
-		int radius = (int) (50.0 / 3 * rad);
+		int diameter = (int) (50.0 / 3 * diam);
 		score = 0;
 		status = true;
 		
@@ -287,11 +287,12 @@ public class Game implements Runnable {
 		
 			status = false;
 
-			int randX = (int) (Math.random() * (500 - 2 * radius));
-			int randY = (int) (Math.random() * (500 - 2 * radius));
-			double centerX = randX + radius / 4.0;
-			double centerY = randY + radius / 4.0;
-			Circle c = new Circle(radius, randX, randY);
+			int randX = (int) (Math.random() * (500 - 2 * diameter));
+			int randY = (int) (Math.random() * (500 - 2 * diameter));
+			double radius = diameter / 2.0;
+			double centerX = randX + radius / 2.0;
+			double centerY = randY + radius / 2.0;
+			Circle c = new Circle(diameter, randX, randY);
 
 			// Mouse Listener
 			c.addMouseListener(new MouseAdapter() {
@@ -299,8 +300,8 @@ public class Game implements Runnable {
 				public void mousePressed(MouseEvent e) {
 					int x = e.getX();
 					int y = e.getY();
-					if (Math.abs(centerX - x) * Math.abs(centerX - x)
-							+ Math.abs(centerY - y) * Math.abs(centerY - y) <= radius * radius / 4.0) {
+					if (Math.pow(Math.abs(centerX - x), 2) +
+							+ Math.pow(Math.abs(centerY - y), 2) <= radius * radius + 1) {
 						score++;
 						status = true;
 						mainframe.getContentPane().remove(c);
