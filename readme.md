@@ -14,37 +14,23 @@
   <a href="#license">License</a>
 </p>
 
-![screenshot](https://raw.githubusercontent.com/amitmerchant1990/electron-markdownify/master/app/img/markdownify.gif)
-
 ## The Game
 
-* LivePreview - Make changes, See changes
-  - Instantly see what your Markdown documents look 
+* Click the circles
+	* Hit the circles withhin a time frame, get as many as you can in a row!
+* Test your aim
+	* Adjustable settings for:
+	  * Speed
+	  * Circle Size
 
 ## How To Use
 
-To clone and run this application, you'll need [Git](https://git-scm.com) and [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) installed on your computer. From your command line:
-
-```bash
-# Clone this repository
-$ git clone https://github.com/amitmerchant1990/electron-markdownify
-
-# Go into the repository
-$ cd electron-markdownify
-
-# Install dependencies
-$ npm install
-
-# Run the app
-$ npm start
-```
-
-Note: If you're using Linux Bash for Windows, [see this guide](https://www.howtogeek.com/261575/how-to-run-graphical-linux-desktop-applications-from-windows-10s-bash-shell/) or use `node` from the command prompt.
-
+To play the game, compile, and run the [Main.java](Main.java) file. 
 
 ## Further Development
 
 New Features include:
+* blah
 
 ## License
 

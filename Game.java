@@ -123,7 +123,7 @@ public class Game implements Runnable {
 	}
 
 	/**
-	 * Initializes the endscreen after failure
+	 * Initializes the end-screen after failure
 	 */
 	public void endScreen() {
 		endFrame = new JFrame();
@@ -289,8 +289,8 @@ public class Game implements Runnable {
 
 			int randX = (int) (Math.random() * (500 - 2 * radius));
 			int randY = (int) (Math.random() * (500 - 2 * radius));
-			double centerX = randX + radius / Math.sqrt(2);
-			double centerY = randY + radius / Math.sqrt(2);
+			double centerX = randX + radius / 4.0;
+			double centerY = randY + radius / 4.0;
 			Circle c = new Circle(radius, randX, randY);
 
 			// Mouse Listener
@@ -300,7 +300,7 @@ public class Game implements Runnable {
 					int x = e.getX();
 					int y = e.getY();
 					if (Math.abs(centerX - x) * Math.abs(centerX - x)
-							+ Math.abs(centerY - y) * Math.abs(centerY - y) <= radius * radius) {
+							+ Math.abs(centerY - y) * Math.abs(centerY - y) <= radius * radius / 4.0) {
 						score++;
 						status = true;
 						mainframe.getContentPane().remove(c);
