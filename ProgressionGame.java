@@ -2,24 +2,24 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.Toolkit;
 import javax.swing.*;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.*;
 import java.lang.Thread;
 
 
-public class Game implements Runnable {
+
+public class ProgressionGame implements Runnable {
 
 	/**
 	 * Instance variables
 	 */
-	private int highest_score;
 	private int score;
 	private boolean status;
 	private double timeLeft;
+	private int level;
 
 	private JFrame startFrame;
 	private JFrame mainframe;
 	private JFrame endFrame;
+	private JFrame failFrame;
 	private Timer timer;
 
 	private double speed;
@@ -29,12 +29,12 @@ public class Game implements Runnable {
 	 * Constructor for game initializes the startscreen, mainframe, score, diameter
 	 * counter, seconds past, and the game status
 	 */
-	public Game(int h, double s, int d) {
-		highest_score = h;
+	public ProgressionGame(double s, int l) {
 		status = true;
 		speed = s;
-		diam = d;
+		diam = 3;
 		timer = null;
+		level = l;
 	}
 
 	/**
@@ -44,7 +44,7 @@ public class Game implements Runnable {
 		// Initialize frame
 		startFrame = new JFrame();
 		startFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		startFrame.setTitle("Aim Game - Start Screen");
+		startFrame.setTitle("Start Screen - Level " + level);
 		startFrame.setSize(500, 500);
 
 		// Initialize layout
@@ -53,51 +53,12 @@ public class Game implements Runnable {
 		layout.setHgap(1000);
 		layout.setVgap(10);
 		panel.setLayout(layout);
-		panel.add(new JLabel("Welcome to the Aim Game."));
+		panel.add(new JLabel("Welcome to the Progression Aim Game."));
 		panel.add(new JLabel("Click circles to gain score!"));
 		panel.add(new JLabel("Make sure to click them quickly!"));
-		panel.add(new JLabel("Highest Score: " + highest_score));
+		panel.add(new JLabel("Once you complete a level, you will move onto the next!"));
 		panel.setBackground(new Color((float) 255 / 255, (float) 226 / 255, (float) 174 / 255));
-
-		// speed slider
-		JLabel headerLabel = new JLabel("Speed Slider", JLabel.CENTER);
-		JSlider slider = new JSlider(JSlider.HORIZONTAL, 1, 10, 1);
-		slider.setMinorTickSpacing(1);
-		slider.setMajorTickSpacing(2);
-		slider.setPaintTicks(true);
-		slider.setPaintLabels(true);
-		slider.setValue((int) speed);
-		slider.setLabelTable(slider.createStandardLabels(1));
-		slider.addChangeListener(new ChangeListener() {
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				speed = ((JSlider) e.getSource()).getValue();
-			}
-		});
 		panel.add(new JLabel(" "));
-		panel.add(headerLabel);
-		panel.add(slider);
-
-		// circle size slider
-		JLabel headerLabel1 = new JLabel("Circle Size Slider", JLabel.CENTER);
-		JSlider slider1 = new JSlider(JSlider.HORIZONTAL, 1, 5, 1);
-		slider1.setMinorTickSpacing(1);
-		slider1.setMajorTickSpacing(2);
-		slider1.setPaintTicks(true);
-		slider1.setPaintLabels(true);
-		slider1.setValue((int) diam);
-		slider1.setLabelTable(slider1.createStandardLabels(1));
-		slider1.addChangeListener(new ChangeListener() {
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				diam = ((JSlider) e.getSource()).getValue();
-			}
-		});
-		panel.add(new JLabel(" "));
-		panel.add(headerLabel1);
-		panel.add(slider1);
-		panel.add(new JLabel(" "));
-
 		// Play button
 		JButton play = new JButton("Play");
 		play.addActionListener(new ActionListener() {
@@ -105,7 +66,7 @@ public class Game implements Runnable {
 				String cmd = e.getActionCommand();
 				if (cmd.equals("Play")) {
 					startFrame.dispose();
-					Game newGame = new Game(highest_score, speed, diam);
+					ProgressionGame newGame = new ProgressionGame(speed, level);
 					Thread gamethread = new Thread(newGame);
 					gamethread.start();
 				}
@@ -127,7 +88,7 @@ public class Game implements Runnable {
 	public void endScreen() {
 		endFrame = new JFrame();
 		endFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		endFrame.setTitle("Aim Game - End Screen");
+		endFrame.setTitle("Passed Level " + level);
 		endFrame.setSize(500, 500);
 
 		JPanel panel = new JPanel();
@@ -135,56 +96,17 @@ public class Game implements Runnable {
 		layout.setHgap(1000);
 		layout.setVgap(10);
 		panel.setLayout(layout);
-		panel.add(new JLabel("Your score was " + score));
-		panel.add(new JLabel("Highest Score: " + highest_score));
+		panel.add(new JLabel("You passed Level " + level + "!"));
 		panel.setBackground(new Color((float) 255 / 255, (float) 226 / 255, (float) 174 / 255));
-
-		// speed slider
-		JLabel headerLabel = new JLabel("Speed Slider", JLabel.CENTER);
-		JSlider slider = new JSlider(JSlider.HORIZONTAL, 1, 10, 1);
-		slider.setMinorTickSpacing(1);
-		slider.setMajorTickSpacing(2);
-		slider.setPaintTicks(true);
-		slider.setPaintLabels(true);
-		slider.setValue((int) speed);
-		slider.setLabelTable(slider.createStandardLabels(1));
-		slider.addChangeListener(new ChangeListener() {
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				speed = ((JSlider) e.getSource()).getValue();
-			}
-		});
-		panel.add(new JLabel(" "));
-		panel.add(headerLabel);
-		panel.add(slider);
-
-		// circle size slider
-		JLabel headerLabel1 = new JLabel("Circle Size Slider", JLabel.CENTER);
-		JSlider slider1 = new JSlider(JSlider.HORIZONTAL, 1, 5, 1);
-		slider1.setMinorTickSpacing(1);
-		slider1.setMajorTickSpacing(2);
-		slider1.setPaintTicks(true);
-		slider1.setPaintLabels(true);
-		slider1.setValue((int) diam);
-		slider1.setLabelTable(slider1.createStandardLabels(1));
-		slider1.addChangeListener(new ChangeListener() {
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				diam = ((JSlider) e.getSource()).getValue();
-			}
-		});
-		panel.add(new JLabel(" "));
-		panel.add(headerLabel1);
-		panel.add(slider1);
 		panel.add(new JLabel(" "));
 
-		JButton play = new JButton("Play Again");
+		JButton play = new JButton("Continue");
 		play.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String cmd = e.getActionCommand();
-				if (cmd.equals("Play Again")) {
+				if (cmd.equals("Continue")) {
 					endFrame.dispose();
-					Game newGame = new Game(highest_score, speed, diam);
+					ProgressionGame newGame = new ProgressionGame(speed+1, level+1);
 					Thread gamethread = new Thread(newGame);
 					gamethread.start();
 				}
@@ -210,6 +132,54 @@ public class Game implements Runnable {
 		endFrame.setVisible(true);
 		endFrame.setResizable(false);
 	}
+	
+	public void failScreen(){
+		failFrame = new JFrame();
+		failFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		failFrame.setTitle("Fail Screen - Level " + level);
+		failFrame.setSize(500, 500);
+
+		JPanel panel = new JPanel();
+		FlowLayout layout = new FlowLayout();
+		layout.setHgap(1000);
+		layout.setVgap(10);
+		panel.setLayout(layout);
+		panel.add(new JLabel("You failed Level " + level + "!"));
+		panel.setBackground(new Color((float) 255 / 255, (float) 226 / 255, (float) 174 / 255));
+		panel.add(new JLabel(" "));
+
+		JButton play = new JButton("Try Again");
+		play.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String cmd = e.getActionCommand();
+				if (cmd.equals("Try Again")) {
+					failFrame.dispose();
+					ProgressionGame newGame = new ProgressionGame(2, 1);
+					Thread gamethread = new Thread(newGame);
+					gamethread.start();
+				}
+			}
+		});
+		play.setPreferredSize(new Dimension(300, 50));
+		panel.add(play);
+
+		JButton exit = new JButton("Exit");
+		exit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String cmd = e.getActionCommand();
+				if (cmd.equals("Exit")) {
+					failFrame.dispose();
+				}
+			}
+		});
+		exit.setPreferredSize(new Dimension(300, 50));
+		panel.add(exit);
+
+		failFrame.add(panel);
+		failFrame.setLocationRelativeTo(null);
+		failFrame.setVisible(true);
+		failFrame.setResizable(false);
+	}
 
 	public void run() {
 		createWindow();
@@ -222,7 +192,7 @@ public class Game implements Runnable {
 	public void createWindow() {
 		mainframe = new JFrame();
 		mainframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		mainframe.setTitle("Aim Game - Game");
+		mainframe.setTitle("Progression Aim Game - Level " + level);
 		mainframe.setSize(500, 500);
 		Toolkit tkit=Toolkit.getDefaultToolkit();
 		ImageIcon icon = new ImageIcon("src\\R_50x50.png");
@@ -285,16 +255,21 @@ public class Game implements Runnable {
 		score = 0;
 		jlabel2.setVerticalAlignment(JLabel.TOP);
 		jlabel2.setHorizontalAlignment(JLabel.RIGHT);
-		jlabel2.setText("Score: " + score);
+		jlabel2.setText("Score: " + score + "/15");
 		mainframe.getContentPane().add(jlabel2);
+		mainframe.revalidate();
+		mainframe.repaint();
 		
+		//Level Label
+		JLabel jlabel3 = new JLabel();
+		jlabel3.setVerticalAlignment(JLabel.TOP);
+		jlabel3.setHorizontalAlignment(JLabel.CENTER);
+		jlabel3.setText("Level " + level);
+		mainframe.getContentPane().add(jlabel3);
 		mainframe.revalidate();
 		mainframe.repaint();
 		
 		while (status) {
-			
-			//TODO: implement score counter inside this loop 
-		
 			status = false;
 
 			int randX = (int) (Math.random() * (500 - 2 * diameter));
@@ -313,8 +288,10 @@ public class Game implements Runnable {
 					if (Math.pow(Math.abs(centerX - x), 2) +
 							+ Math.pow(Math.abs(centerY - y), 2) <= radius * radius + 1) {
 						score++;
-						jlabel2.setText("Score: " + score);
-						status = true;
+						jlabel2.setText("Score: " + score + "/15");
+						if (score < 15){
+							status = true;
+						}
 						mainframe.getContentPane().remove(c);
 						mainframe.revalidate();
 						mainframe.repaint();
@@ -327,13 +304,15 @@ public class Game implements Runnable {
 			wait((int) (50.0 / speed));
 
 		}
-		highest_score = Math.max(score, highest_score);
 		timer.stop();
 		mainframe.getContentPane().remove(jlabel1);
 		mainframe.setVisible(false);
 		mainframe.dispose();
-		
-		endScreen();
-
+		if (score >= 15){
+			endScreen();
+		}
+		else{
+			failScreen();
+		}
 	}
 }
