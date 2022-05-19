@@ -6,7 +6,6 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.*;
 import java.lang.Thread;
 
-
 public class Game implements Runnable {
 
 	/**
@@ -26,8 +25,8 @@ public class Game implements Runnable {
 	private int diam;
 
 	/**
-	 * Constructor for game initializes the startscreen, mainframe, score, diameter
-	 * counter, seconds past, and the game status
+	 * Constructor for game initializes the startscreen, mainframe, score,
+	 * diameter counter, seconds past, and the game status
 	 */
 	public Game(int h, double s, int d) {
 		highest_score = h;
@@ -224,11 +223,10 @@ public class Game implements Runnable {
 		mainframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mainframe.setTitle("Aim Game - Game");
 		mainframe.setSize(500, 500);
-		Toolkit tkit=Toolkit.getDefaultToolkit();
+		Toolkit tkit = Toolkit.getDefaultToolkit();
 		ImageIcon icon = new ImageIcon("src\\R_50x50.png");
 		Image im1 = icon.getImage();
-		mainframe.setCursor(tkit.createCustomCursor(im1 , new Point(mainframe.getX(), 
-			      mainframe.getY()), "cursor"));
+		mainframe.setCursor(tkit.createCustomCursor(im1, new Point(mainframe.getX(), mainframe.getY()), "cursor"));
 		mainframe.setLocationRelativeTo(null);
 		mainframe.setVisible(true);
 		mainframe.setResizable(false);
@@ -255,21 +253,18 @@ public class Game implements Runnable {
 	public void play() {
 		int diameter = (int) (50.0 / 3 * diam);
 		status = true;
-		
-		//Seconds Label
+
+		// Seconds Label
 		JLabel jlabel1 = new JLabel();
 		timeLeft = 0;
-		ActionListener counter = new ActionListener()
-		{
-		    public void actionPerformed(ActionEvent e)
-		    {
-		    	timeLeft += 1.2;
-		        jlabel1.setText("Seconds: " + (int) (timeLeft / 10));
-		        if(timeLeft >= 1000)
-		        {
-		            timer.stop();
-		        }
-		    }
+		ActionListener counter = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				timeLeft += 1.2;
+				jlabel1.setText("Seconds: " + (int) (timeLeft / 10));
+				if (timeLeft >= 1000) {
+					timer.stop();
+				}
+			}
 		};
 		timer = new Timer(100, counter);
 		timer.setInitialDelay(0);
@@ -279,7 +274,7 @@ public class Game implements Runnable {
 		timer.start();
 		mainframe.revalidate();
 		mainframe.repaint();
-		
+
 		// Score Label
 		JLabel jlabel2 = new JLabel();
 		score = 0;
@@ -287,14 +282,11 @@ public class Game implements Runnable {
 		jlabel2.setHorizontalAlignment(JLabel.RIGHT);
 		jlabel2.setText("Score: " + score);
 		mainframe.getContentPane().add(jlabel2);
-		
+
 		mainframe.revalidate();
 		mainframe.repaint();
-		
+
 		while (status) {
-			
-			//TODO: implement score counter inside this loop 
-		
 			status = false;
 
 			int randX = (int) (Math.random() * (500 - 2 * diameter));
@@ -310,8 +302,8 @@ public class Game implements Runnable {
 				public void mousePressed(MouseEvent e) {
 					int x = e.getX();
 					int y = e.getY();
-					if (Math.pow(Math.abs(centerX - x), 2) +
-							+ Math.pow(Math.abs(centerY - y), 2) <= radius * radius + 1) {
+					if (Math.pow(Math.abs(centerX - x), 2) + +Math.pow(Math.abs(centerY - y), 2) <= radius * radius
+							+ 1) {
 						score++;
 						jlabel2.setText("Score: " + score);
 						status = true;
@@ -332,7 +324,7 @@ public class Game implements Runnable {
 		mainframe.getContentPane().remove(jlabel1);
 		mainframe.setVisible(false);
 		mainframe.dispose();
-		
+
 		endScreen();
 
 	}

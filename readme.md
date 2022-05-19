@@ -30,7 +30,7 @@ To play the game, compile, and run the [Main.java](Main.java) file.
 ## Further Development
 
 New Features include:
-* blah
+* Progression/Levels system
 
 ## License
 

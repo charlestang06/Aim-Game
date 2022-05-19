@@ -4,8 +4,6 @@ import java.awt.Toolkit;
 import javax.swing.*;
 import java.lang.Thread;
 
-
-
 public class ProgressionGame implements Runnable {
 
 	/**
@@ -26,8 +24,8 @@ public class ProgressionGame implements Runnable {
 	private int diam;
 
 	/**
-	 * Constructor for game initializes the startscreen, mainframe, score, diameter
-	 * counter, seconds past, and the game status
+	 * Constructor for game initializes the startscreen, mainframe, score,
+	 * diameter counter, seconds past, and the game status
 	 */
 	public ProgressionGame(double s, int l) {
 		status = true;
@@ -83,7 +81,7 @@ public class ProgressionGame implements Runnable {
 	}
 
 	/**
-	 * Initializes the end-screen after failure
+	 * Initializes the end-screen after successful completion
 	 */
 	public void endScreen() {
 		endFrame = new JFrame();
@@ -106,7 +104,7 @@ public class ProgressionGame implements Runnable {
 				String cmd = e.getActionCommand();
 				if (cmd.equals("Continue")) {
 					endFrame.dispose();
-					ProgressionGame newGame = new ProgressionGame(speed+1, level+1);
+					ProgressionGame newGame = new ProgressionGame(speed + 1, level + 1);
 					Thread gamethread = new Thread(newGame);
 					gamethread.start();
 				}
@@ -132,8 +130,11 @@ public class ProgressionGame implements Runnable {
 		endFrame.setVisible(true);
 		endFrame.setResizable(false);
 	}
-	
-	public void failScreen(){
+
+	/**
+	 * Initializes the fail-screen after failure
+	 */
+	public void failScreen() {
 		failFrame = new JFrame();
 		failFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		failFrame.setTitle("Fail Screen - Level " + level);
@@ -194,11 +195,10 @@ public class ProgressionGame implements Runnable {
 		mainframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mainframe.setTitle("Progression Aim Game - Level " + level);
 		mainframe.setSize(500, 500);
-		Toolkit tkit=Toolkit.getDefaultToolkit();
+		Toolkit tkit = Toolkit.getDefaultToolkit();
 		ImageIcon icon = new ImageIcon("src\\R_50x50.png");
 		Image im1 = icon.getImage();
-		mainframe.setCursor(tkit.createCustomCursor(im1 , new Point(mainframe.getX(), 
-			      mainframe.getY()), "cursor"));
+		mainframe.setCursor(tkit.createCustomCursor(im1, new Point(mainframe.getX(), mainframe.getY()), "cursor"));
 		mainframe.setLocationRelativeTo(null);
 		mainframe.setVisible(true);
 		mainframe.setResizable(false);
@@ -225,21 +225,18 @@ public class ProgressionGame implements Runnable {
 	public void play() {
 		int diameter = (int) (50.0 / 3 * diam);
 		status = true;
-		
-		//Seconds Label
+
+		// Seconds Label
 		JLabel jlabel1 = new JLabel();
 		timeLeft = 0;
-		ActionListener counter = new ActionListener()
-		{
-		    public void actionPerformed(ActionEvent e)
-		    {
-		    	timeLeft += 1.2;
-		        jlabel1.setText("Seconds: " + (int) (timeLeft / 10));
-		        if(timeLeft >= 1000)
-		        {
-		            timer.stop();
-		        }
-		    }
+		ActionListener counter = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				timeLeft += 1.2;
+				jlabel1.setText("Seconds: " + (int) (timeLeft / 10));
+				if (timeLeft >= 1000) {
+					timer.stop();
+				}
+			}
 		};
 		timer = new Timer(100, counter);
 		timer.setInitialDelay(0);
@@ -249,7 +246,7 @@ public class ProgressionGame implements Runnable {
 		timer.start();
 		mainframe.revalidate();
 		mainframe.repaint();
-		
+
 		// Score Label
 		JLabel jlabel2 = new JLabel();
 		score = 0;
@@ -259,8 +256,8 @@ public class ProgressionGame implements Runnable {
 		mainframe.getContentPane().add(jlabel2);
 		mainframe.revalidate();
 		mainframe.repaint();
-		
-		//Level Label
+
+		// Level Label
 		JLabel jlabel3 = new JLabel();
 		jlabel3.setVerticalAlignment(JLabel.TOP);
 		jlabel3.setHorizontalAlignment(JLabel.CENTER);
@@ -268,7 +265,7 @@ public class ProgressionGame implements Runnable {
 		mainframe.getContentPane().add(jlabel3);
 		mainframe.revalidate();
 		mainframe.repaint();
-		
+
 		while (status) {
 			status = false;
 
@@ -285,11 +282,11 @@ public class ProgressionGame implements Runnable {
 				public void mousePressed(MouseEvent e) {
 					int x = e.getX();
 					int y = e.getY();
-					if (Math.pow(Math.abs(centerX - x), 2) +
-							+ Math.pow(Math.abs(centerY - y), 2) <= radius * radius + 1) {
+					if (Math.pow(Math.abs(centerX - x), 2) + +Math.pow(Math.abs(centerY - y), 2) <= radius * radius
+							+ 1) {
 						score++;
 						jlabel2.setText("Score: " + score + "/15");
-						if (score < 15){
+						if (score < 15) {
 							status = true;
 						}
 						mainframe.getContentPane().remove(c);
@@ -308,10 +305,9 @@ public class ProgressionGame implements Runnable {
 		mainframe.getContentPane().remove(jlabel1);
 		mainframe.setVisible(false);
 		mainframe.dispose();
-		if (score >= 15){
+		if (score >= 15) {
 			endScreen();
-		}
-		else{
+		} else {
 			failScreen();
 		}
 	}
