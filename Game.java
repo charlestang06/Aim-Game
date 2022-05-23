@@ -25,7 +25,7 @@ public class Game implements Runnable {
 	private int diam;
 
 	/**
-	 * Constructor for game initializes the startscreen, mainframe, score,
+	 * Constructor for game initializes the start-screen, mainframe, score,
 	 * diameter counter, seconds past, and the game status
 	 */
 	public Game(int h, double s, int d) {
@@ -294,7 +294,7 @@ public class Game implements Runnable {
 			double radius = diameter / 2.0;
 			double centerX = randX + radius / 2.0;
 			double centerY = randY + radius / 2.0;
-			Circle c = new Circle(diameter, randX, randY);
+			CircleCreator c = new CircleCreator(diameter, randX, randY);
 
 			// Mouse Listener
 			c.addMouseListener(new MouseAdapter() {
