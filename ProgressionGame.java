@@ -19,6 +19,7 @@ public class ProgressionGame implements Runnable {
 	private JFrame endFrame;
 	private JFrame failFrame;
 	private Timer timer;
+	private Dimension dims;
 
 	private double speed;
 	private int diam;
@@ -27,12 +28,13 @@ public class ProgressionGame implements Runnable {
 	 * Constructor for game initializes the start-screen, mainframe, score,
 	 * diameter counter, seconds past, and the game status
 	 */
-	public ProgressionGame(double s, int l) {
+	public ProgressionGame(double s, int l, Dimension d) {
 		status = true;
 		speed = s;
 		diam = 3;
 		timer = null;
 		level = l;
+		dims = d;
 	}
 
 	/**
@@ -43,7 +45,7 @@ public class ProgressionGame implements Runnable {
 		startFrame = new JFrame();
 		startFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		startFrame.setTitle("Start Screen - Level " + level);
-		startFrame.setSize(500, 500);
+		startFrame.setSize(dims);
 
 		// Initialize layout
 		JPanel panel = new JPanel();
@@ -64,7 +66,7 @@ public class ProgressionGame implements Runnable {
 				String cmd = e.getActionCommand();
 				if (cmd.equals("Play")) {
 					startFrame.dispose();
-					ProgressionGame newGame = new ProgressionGame(speed, level);
+					ProgressionGame newGame = new ProgressionGame(speed, level, dims);
 					Thread gamethread = new Thread(newGame);
 					gamethread.start();
 				}
@@ -87,7 +89,7 @@ public class ProgressionGame implements Runnable {
 		endFrame = new JFrame();
 		endFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		endFrame.setTitle("Passed Level " + level);
-		endFrame.setSize(500, 500);
+		endFrame.setSize(dims);
 
 		JPanel panel = new JPanel();
 		FlowLayout layout = new FlowLayout();
@@ -104,7 +106,7 @@ public class ProgressionGame implements Runnable {
 				String cmd = e.getActionCommand();
 				if (cmd.equals("Continue")) {
 					endFrame.dispose();
-					ProgressionGame newGame = new ProgressionGame(speed + 1, level + 1);
+					ProgressionGame newGame = new ProgressionGame(speed + 1, level + 1, dims);
 					Thread gamethread = new Thread(newGame);
 					gamethread.start();
 				}
@@ -138,7 +140,7 @@ public class ProgressionGame implements Runnable {
 		failFrame = new JFrame();
 		failFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		failFrame.setTitle("Fail Screen - Level " + level);
-		failFrame.setSize(500, 500);
+		failFrame.setSize(dims);
 
 		JPanel panel = new JPanel();
 		FlowLayout layout = new FlowLayout();
@@ -155,7 +157,7 @@ public class ProgressionGame implements Runnable {
 				String cmd = e.getActionCommand();
 				if (cmd.equals("Try Again")) {
 					failFrame.dispose();
-					ProgressionGame newGame = new ProgressionGame(2, 1);
+					ProgressionGame newGame = new ProgressionGame(2, 1, dims);
 					Thread gamethread = new Thread(newGame);
 					gamethread.start();
 				}
@@ -194,7 +196,7 @@ public class ProgressionGame implements Runnable {
 		mainframe = new JFrame();
 		mainframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mainframe.setTitle("Progression Aim Game - Level " + level);
-		mainframe.setSize(500, 500);
+		mainframe.setSize(dims);
 		Toolkit tkit = Toolkit.getDefaultToolkit();
 		ImageIcon icon = new ImageIcon("src\\R_50x50.png");
 		Image im1 = icon.getImage();
@@ -269,8 +271,8 @@ public class ProgressionGame implements Runnable {
 		while (status) {
 			status = false;
 
-			int randX = (int) (Math.random() * (500 - 2 * diameter));
-			int randY = (int) (Math.random() * (500 - 2 * diameter));
+			int randX = (int) (Math.random() * (dims.getWidth() - 2 * diameter));
+			int randY = (int) (Math.random() * (dims.getHeight() - 2 * diameter));
 			double radius = diameter / 2.0;
 			double centerX = randX + radius / 2.0;
 			double centerY = randY + radius / 2.0;

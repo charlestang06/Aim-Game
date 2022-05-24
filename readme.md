@@ -5,7 +5,7 @@
   <br>
 </h1>
 
-<h4 align="center">A game designed by Charles Tang in the 2022 AP CSA Class at Algonquin Regional High School. </a>.</h4>
+<h4 align="center">A game designed by Charles Tang in the 2022 AP CSA Class at Algonquin Regional High School. </a> </h4>
 
 <p align="center">
   <a href="The Game">The Game</a> •

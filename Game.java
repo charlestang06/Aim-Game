@@ -20,6 +20,7 @@ public class Game implements Runnable {
 	private JFrame mainframe;
 	private JFrame endFrame;
 	private Timer timer;
+	private Dimension dims;
 
 	private double speed;
 	private int diam;
@@ -28,12 +29,13 @@ public class Game implements Runnable {
 	 * Constructor for game initializes the start-screen, mainframe, score,
 	 * diameter counter, seconds past, and the game status
 	 */
-	public Game(int h, double s, int d) {
+	public Game(int h, double s, int d, Dimension dim) {
 		highest_score = h;
 		status = true;
 		speed = s;
 		diam = d;
 		timer = null;
+		dims = dim;
 	}
 
 	/**
@@ -44,7 +46,7 @@ public class Game implements Runnable {
 		startFrame = new JFrame();
 		startFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		startFrame.setTitle("Aim Game - Start Screen");
-		startFrame.setSize(500, 500);
+		startFrame.setSize(dims);
 
 		// Initialize layout
 		JPanel panel = new JPanel();
@@ -104,7 +106,7 @@ public class Game implements Runnable {
 				String cmd = e.getActionCommand();
 				if (cmd.equals("Play")) {
 					startFrame.dispose();
-					Game newGame = new Game(highest_score, speed, diam);
+					Game newGame = new Game(highest_score, speed, diam, dims);
 					Thread gamethread = new Thread(newGame);
 					gamethread.start();
 				}
@@ -127,7 +129,7 @@ public class Game implements Runnable {
 		endFrame = new JFrame();
 		endFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		endFrame.setTitle("Aim Game - End Screen");
-		endFrame.setSize(500, 500);
+		endFrame.setSize(dims);
 
 		JPanel panel = new JPanel();
 		FlowLayout layout = new FlowLayout();
@@ -183,7 +185,7 @@ public class Game implements Runnable {
 				String cmd = e.getActionCommand();
 				if (cmd.equals("Play Again")) {
 					endFrame.dispose();
-					Game newGame = new Game(highest_score, speed, diam);
+					Game newGame = new Game(highest_score, speed, diam, dims);
 					Thread gamethread = new Thread(newGame);
 					gamethread.start();
 				}
@@ -222,7 +224,7 @@ public class Game implements Runnable {
 		mainframe = new JFrame();
 		mainframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mainframe.setTitle("Aim Game - Game");
-		mainframe.setSize(500, 500);
+		mainframe.setSize(dims);
 		Toolkit tkit = Toolkit.getDefaultToolkit();
 		ImageIcon icon = new ImageIcon("src\\R_50x50.png");
 		Image im1 = icon.getImage();
@@ -289,8 +291,8 @@ public class Game implements Runnable {
 		while (status) {
 			status = false;
 
-			int randX = (int) (Math.random() * (500 - 2 * diameter));
-			int randY = (int) (Math.random() * (500 - 2 * diameter));
+			int randX = (int) (Math.random() * (dims.getWidth() - 2 * diameter));
+			int randY = (int) (Math.random() * (dims.getHeight() - 2 * diameter));
 			double radius = diameter / 2.0;
 			double centerX = randX + radius / 2.0;
 			double centerY = randY + radius / 2.0;
