@@ -1,8 +1,8 @@
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.Toolkit;
 import javax.swing.*;
 import java.lang.Thread;
+import java.net.URL;
 
 public class ProgressionGame implements Runnable {
 
@@ -157,7 +157,7 @@ public class ProgressionGame implements Runnable {
 				String cmd = e.getActionCommand();
 				if (cmd.equals("Try Again")) {
 					failFrame.dispose();
-					ProgressionGame newGame = new ProgressionGame(2, 1, dims);
+					ProgressionGame newGame = new ProgressionGame(speed, level, dims);
 					Thread gamethread = new Thread(newGame);
 					gamethread.start();
 				}
@@ -183,7 +183,7 @@ public class ProgressionGame implements Runnable {
 		failFrame.setVisible(true);
 		failFrame.setResizable(false);
 	}
-
+	
 	public void run() {
 		createWindow();
 		play();
@@ -198,8 +198,8 @@ public class ProgressionGame implements Runnable {
 		mainframe.setTitle("Progression Aim Game - Level " + level);
 		mainframe.setSize(dims);
 		Toolkit tkit = Toolkit.getDefaultToolkit();
-		ImageIcon icon = new ImageIcon("src\\R_50x50.png");
-		Image im1 = icon.getImage();
+		URL url = this.getClass().getResource("R_50x50.png");
+		Image im1 = tkit.getImage(url);
 		mainframe.setCursor(tkit.createCustomCursor(im1, new Point(mainframe.getX(), mainframe.getY()), "cursor"));
 		mainframe.setLocationRelativeTo(null);
 		mainframe.setVisible(true);

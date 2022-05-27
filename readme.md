@@ -23,6 +23,16 @@
 	  * Speed
 	  * Circle Size
 
+**Two Versions of Aim Game**
+
+1. Custom Aim Game
+* Customize all features of the game (speed/circle size)
+* Infinite circles, no score cap
+2. Progression Aim Game
+* Start at Level 1 and progress forwards
+* Must hit 15 circles without missing
+* Speed of the circles increases for higher levels
+
 ## How To Use
 
 To play the game, compile, and run the [Main.java](Main.java) file. 

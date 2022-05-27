@@ -5,6 +5,7 @@ import javax.swing.*;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.*;
 import java.lang.Thread;
+import java.net.URL;
 
 public class Game implements Runnable {
 
@@ -24,6 +25,8 @@ public class Game implements Runnable {
 
 	private double speed;
 	private int diam;
+	
+	// TODO: customize background color
 
 	/**
 	 * Constructor for game initializes the start-screen, mainframe, score,
@@ -226,8 +229,8 @@ public class Game implements Runnable {
 		mainframe.setTitle("Aim Game - Game");
 		mainframe.setSize(dims);
 		Toolkit tkit = Toolkit.getDefaultToolkit();
-		ImageIcon icon = new ImageIcon("src\\R_50x50.png");
-		Image im1 = icon.getImage();
+		URL url = this.getClass().getResource("R_50x50.png");
+		Image im1 = tkit.getImage(url);
 		mainframe.setCursor(tkit.createCustomCursor(im1, new Point(mainframe.getX(), mainframe.getY()), "cursor"));
 		mainframe.setLocationRelativeTo(null);
 		mainframe.setVisible(true);
