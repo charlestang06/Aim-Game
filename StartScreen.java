@@ -1,3 +1,11 @@
+
+/**
+ * @author Charles Tang
+ * StartScreen.java creates the starter frame that allows 
+ * the user to choose between the levels 
+ * or customizable aim game
+ */
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -7,6 +15,8 @@ public class StartScreen {
 	 * Instance variables
 	 */
 	private JFrame startFrame;
+	private String cursor_string;
+	private Dimension dims;
 
 	/**
 	 * Constructor for StartScreen class
@@ -15,6 +25,8 @@ public class StartScreen {
 	 */
 	public StartScreen() {
 		startFrame = new JFrame();
+		dims = new Dimension(500, 500);
+		cursor_string = "Gun Cursor";
 	}
 
 	/**
@@ -26,7 +38,7 @@ public class StartScreen {
 		startFrame = new JFrame();
 		startFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		startFrame.setTitle("Start Screen");
-		startFrame.setSize(500, 500);
+		startFrame.setSize(dims);
 
 		// Initialize layout
 		JPanel panel = new JPanel();
@@ -46,7 +58,7 @@ public class StartScreen {
 				String cmd = e.getActionCommand();
 				if (cmd.equals("Custom")) {
 					startFrame.dispose();
-					Game g = new Game(0, 5, 3);
+					CustomGame g = new CustomGame(0, 5, 3, dims, cursor_string);
 					g.starterScreen();
 				}
 			}
@@ -59,8 +71,8 @@ public class StartScreen {
 			public void actionPerformed(ActionEvent e) {
 				String cmd = e.getActionCommand();
 				if (cmd.equals("Levels")) {
+					ProgressionGame g = new ProgressionGame(2, 1, dims, cursor_string);
 					startFrame.dispose();
-					ProgressionGame g = new ProgressionGame(2, 1);
 					g.starterScreen();
 				}
 			}
@@ -68,10 +80,24 @@ public class StartScreen {
 		prog.setPreferredSize(new Dimension(300, 50));
 		panel.add(prog);
 
+		panel.add(new JLabel(" "));
+
+		// Custom cursor drop down menu
+		JComboBox cursor = new JComboBox();
+		cursor.addItem("Gun Cursor");
+		cursor.addItem("Normal Cursor");
+		cursor.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cursor_string = ((JComboBox) e.getSource()).getSelectedItem().toString();
+			}
+		});
+
+		panel.add(cursor);
+
 		startFrame.add(panel);
 		startFrame.setLocationRelativeTo(null);
 		startFrame.setVisible(true);
-		startFrame.setResizable(false);
+		startFrame.setResizable(true);
 	}
 
 }
