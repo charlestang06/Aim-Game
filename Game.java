@@ -1,3 +1,7 @@
+/**
+ * @author Charles Tang Game.java provides the interface for all versions of
+ *         games
+ */
 public interface Game {
 	public void starterScreen();
 

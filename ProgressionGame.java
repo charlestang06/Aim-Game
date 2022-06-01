@@ -1,8 +1,26 @@
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import java.lang.Thread;
+
+/**
+ * @author Charles Tang
+ * ProgressionGame.java creates a level-based Aim Game which 
+ * allows the user to play levels of increasing difficulty */
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.net.URL;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.Timer;
 
 public class ProgressionGame implements Runnable, Game {
 
@@ -42,6 +60,7 @@ public class ProgressionGame implements Runnable, Game {
 	/**
 	 * Initializes the starter screen for the game
 	 */
+	@Override
 	public void starterScreen() {
 		// Initialize frame
 		startFrame = new JFrame();
@@ -64,6 +83,7 @@ public class ProgressionGame implements Runnable, Game {
 		// Play button
 		JButton play = new JButton("Play");
 		play.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				String cmd = e.getActionCommand();
 				if (cmd.equals("Play")) {
@@ -87,6 +107,7 @@ public class ProgressionGame implements Runnable, Game {
 	/**
 	 * Initializes the end-screen after successful completion
 	 */
+	@Override
 	public void endScreen() {
 		endFrame = new JFrame();
 		endFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -104,6 +125,7 @@ public class ProgressionGame implements Runnable, Game {
 
 		JButton play = new JButton("Continue");
 		play.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				String cmd = e.getActionCommand();
 				if (cmd.equals("Continue")) {
@@ -119,6 +141,7 @@ public class ProgressionGame implements Runnable, Game {
 
 		JButton exit = new JButton("Exit");
 		exit.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				String cmd = e.getActionCommand();
 				if (cmd.equals("Exit")) {
@@ -156,6 +179,7 @@ public class ProgressionGame implements Runnable, Game {
 		// Try Again button
 		JButton play = new JButton("Try Again");
 		play.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				String cmd = e.getActionCommand();
 				if (cmd.equals("Try Again")) {
@@ -171,6 +195,7 @@ public class ProgressionGame implements Runnable, Game {
 
 		JButton exit = new JButton("Exit");
 		exit.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				String cmd = e.getActionCommand();
 				if (cmd.equals("Exit")) {
@@ -187,6 +212,7 @@ public class ProgressionGame implements Runnable, Game {
 		failFrame.setResizable(false);
 	}
 
+	@Override
 	public void run() {
 		createWindow();
 		play();
@@ -195,6 +221,7 @@ public class ProgressionGame implements Runnable, Game {
 	/**
 	 * Initializes the window to play the game
 	 */
+	@Override
 	public void createWindow() {
 		mainframe = new JFrame();
 		mainframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -215,6 +242,7 @@ public class ProgressionGame implements Runnable, Game {
 	 * The main function of the program, initializes the game and creates circle
 	 * objects through a while loop, checking for a mouse click each time
 	 */
+	@Override
 	public void play() {
 		int diameter = (int) (50.0 / 3 * diam);
 		status = true;
@@ -223,6 +251,7 @@ public class ProgressionGame implements Runnable, Game {
 		JLabel jlabel1 = new JLabel();
 		timeLeft = 0;
 		ActionListener counter = new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				timeLeft += 1.2;
 				jlabel1.setText("Seconds: " + (int) (timeLeft / 10));

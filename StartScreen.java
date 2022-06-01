@@ -3,12 +3,20 @@
  * @author Charles Tang
  * StartScreen.java creates the starter frame that allows 
  * the user to choose between the levels 
- * or customizable aim game
+ * or customizable Aim Game
  */
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 public class StartScreen {
 	/**
@@ -54,6 +62,7 @@ public class StartScreen {
 		// Custom button
 		JButton custom = new JButton("Custom");
 		custom.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				String cmd = e.getActionCommand();
 				if (cmd.equals("Custom")) {
@@ -66,8 +75,10 @@ public class StartScreen {
 		custom.setPreferredSize(new Dimension(300, 50));
 		panel.add(custom);
 
+		// Progression Levels Aim Game Button
 		JButton prog = new JButton("Levels");
 		prog.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				String cmd = e.getActionCommand();
 				if (cmd.equals("Levels")) {
@@ -87,6 +98,7 @@ public class StartScreen {
 		cursor.addItem("Gun Cursor");
 		cursor.addItem("Normal Cursor");
 		cursor.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				cursor_string = ((JComboBox) e.getSource()).getSelectedItem().toString();
 			}

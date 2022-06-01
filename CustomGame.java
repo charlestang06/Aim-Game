@@ -1,11 +1,30 @@
-import java.awt.*;
-import java.awt.event.*;
+
+/**
+ * @author Charles Tang
+ * CustomGame.java creates a Customizable Aim Game for the user to play
+ * Creates the Java Swing GUI and playable interface 
+ */
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Image;
+import java.awt.Point;
 import java.awt.Toolkit;
-import javax.swing.*;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.*;
-import java.lang.Thread;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.net.URL;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSlider;
+import javax.swing.Timer;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public class CustomGame implements Runnable, Game {
 
@@ -27,8 +46,6 @@ public class CustomGame implements Runnable, Game {
 	private double speed;
 	private int diam;
 
-	// TODO: customize background color
-
 	/**
 	 * Constructor for game initializes the start-screen, mainframe, score,
 	 * diameter counter, seconds past, and the game status
@@ -46,6 +63,7 @@ public class CustomGame implements Runnable, Game {
 	/**
 	 * Initializes the starter screen for the game
 	 */
+	@Override
 	public void starterScreen() {
 		// Initialize frame
 		startFrame = new JFrame();
@@ -53,7 +71,7 @@ public class CustomGame implements Runnable, Game {
 		startFrame.setTitle("Aim Game - Start Screen");
 		startFrame.setSize(dims);
 
-		// Initialize layout
+		// Initialize Layout
 		JPanel panel = new JPanel();
 		FlowLayout layout = new FlowLayout();
 		layout.setHgap(1000);
@@ -65,7 +83,7 @@ public class CustomGame implements Runnable, Game {
 		panel.add(new JLabel("Highest Score: " + highest_score));
 		panel.setBackground(new Color((float) 255 / 255, (float) 226 / 255, (float) 174 / 255));
 
-		// speed slider
+		// Speed Slider
 		JLabel headerLabel = new JLabel("Speed Slider", JLabel.CENTER);
 		JSlider slider = new JSlider(JSlider.HORIZONTAL, 1, 10, 1);
 		slider.setMinorTickSpacing(1);
@@ -84,14 +102,14 @@ public class CustomGame implements Runnable, Game {
 		panel.add(headerLabel);
 		panel.add(slider);
 
-		// circle size slider
+		// Circle Size Slider
 		JLabel headerLabel1 = new JLabel("Circle Size Slider", JLabel.CENTER);
 		JSlider slider1 = new JSlider(JSlider.HORIZONTAL, 1, 5, 1);
 		slider1.setMinorTickSpacing(1);
 		slider1.setMajorTickSpacing(2);
 		slider1.setPaintTicks(true);
 		slider1.setPaintLabels(true);
-		slider1.setValue((int) diam);
+		slider1.setValue(diam);
 		slider1.setLabelTable(slider1.createStandardLabels(1));
 		slider1.addChangeListener(new ChangeListener() {
 			@Override
@@ -104,15 +122,10 @@ public class CustomGame implements Runnable, Game {
 		panel.add(slider1);
 		panel.add(new JLabel(" "));
 
-		// Play button
+		// Play Button
 		JButton play = new JButton("Play");
 		play.addActionListener(new ActionListener() {
-			/**
-			 * Detects Play Button click Creates a new Game Thread if clicked
-			 * 
-			 * @param ActionEvent
-			 *            button click
-			 */
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				String cmd = e.getActionCommand();
 				if (cmd.equals("Play")) {
@@ -136,6 +149,7 @@ public class CustomGame implements Runnable, Game {
 	/**
 	 * Initializes the end-screen after failure
 	 */
+	@Override
 	public void endScreen() {
 		endFrame = new JFrame();
 		endFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -151,7 +165,7 @@ public class CustomGame implements Runnable, Game {
 		panel.add(new JLabel("Highest Score: " + highest_score));
 		panel.setBackground(new Color((float) 255 / 255, (float) 226 / 255, (float) 174 / 255));
 
-		// speed slider
+		// Speed Slider
 		JLabel headerLabel = new JLabel("Speed Slider", JLabel.CENTER);
 		JSlider slider = new JSlider(JSlider.HORIZONTAL, 1, 10, 1);
 		slider.setMinorTickSpacing(1);
@@ -161,12 +175,6 @@ public class CustomGame implements Runnable, Game {
 		slider.setValue((int) speed);
 		slider.setLabelTable(slider.createStandardLabels(1));
 		slider.addChangeListener(new ChangeListener() {
-			/**
-			 * Updates the value of the slider for speed
-			 * 
-			 * @param ChangeEvent
-			 *            slider movement
-			 */
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				speed = ((JSlider) e.getSource()).getValue();
@@ -176,22 +184,16 @@ public class CustomGame implements Runnable, Game {
 		panel.add(headerLabel);
 		panel.add(slider);
 
-		// circle size slider
+		// Circle Size Slider
 		JLabel headerLabel1 = new JLabel("Circle Size Slider", JLabel.CENTER);
 		JSlider slider1 = new JSlider(JSlider.HORIZONTAL, 1, 5, 1);
 		slider1.setMinorTickSpacing(1);
 		slider1.setMajorTickSpacing(2);
 		slider1.setPaintTicks(true);
 		slider1.setPaintLabels(true);
-		slider1.setValue((int) diam);
+		slider1.setValue(diam);
 		slider1.setLabelTable(slider1.createStandardLabels(1));
 		slider1.addChangeListener(new ChangeListener() {
-			/**
-			 * Updates the value of the slides for circle size
-			 * 
-			 * @param ChangeEvent
-			 *            slider movement
-			 */
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				diam = ((JSlider) e.getSource()).getValue();
@@ -202,14 +204,10 @@ public class CustomGame implements Runnable, Game {
 		panel.add(slider1);
 		panel.add(new JLabel(" "));
 
+		// Play Again Button
 		JButton play = new JButton("Play Again");
 		play.addActionListener(new ActionListener() {
-			/**
-			 * Detects Play Again button click
-			 * 
-			 * @param ActionEvent
-			 *            button click
-			 */
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				String cmd = e.getActionCommand();
 				if (cmd.equals("Play Again")) {
@@ -223,14 +221,10 @@ public class CustomGame implements Runnable, Game {
 		play.setPreferredSize(new Dimension(300, 50));
 		panel.add(play);
 
+		// Exit Button
 		JButton exit = new JButton("Exit");
 		exit.addActionListener(new ActionListener() {
-			/**
-			 * Detects Exit button click
-			 * 
-			 * @param ActionEvent
-			 *            button click
-			 */
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				String cmd = e.getActionCommand();
 				if (cmd.equals("Exit")) {
@@ -251,6 +245,7 @@ public class CustomGame implements Runnable, Game {
 	 * Method implemented for Runnable interface Method is run when
 	 * Thread.start() is called when instantiating a new game
 	 */
+	@Override
 	public void run() {
 		createWindow();
 		play();
@@ -259,6 +254,7 @@ public class CustomGame implements Runnable, Game {
 	/**
 	 * Initializes the window to play the game
 	 */
+	@Override
 	public void createWindow() {
 		mainframe = new JFrame();
 		mainframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -279,6 +275,7 @@ public class CustomGame implements Runnable, Game {
 	 * The main function of the program, initializes the game and creates circle
 	 * objects through a while loop, checking for a mouse click each time
 	 */
+	@Override
 	public void play() {
 		int diameter = (int) (50.0 / 3 * diam);
 		status = true;
@@ -287,6 +284,7 @@ public class CustomGame implements Runnable, Game {
 		JLabel jlabel1 = new JLabel();
 		timeLeft = 0;
 		ActionListener counter = new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				timeLeft += 1.2;
 				jlabel1.setText("Seconds: " + (int) (timeLeft / 10));

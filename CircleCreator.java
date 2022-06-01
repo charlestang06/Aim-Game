@@ -2,10 +2,13 @@
 /**
  * @author Charles Tang
  * Circle.java creates Circles for the user to click on 
- * during the game and paints them onto the canvas
+ * during the game and paints them onto the canvas 
  */
-import java.awt.*;
-import javax.swing.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+
+import javax.swing.JComponent;
 
 public class CircleCreator extends JComponent {
 	private static final long serialVersionUID = 8015978078280349192L;
@@ -67,5 +70,14 @@ public class CircleCreator extends JComponent {
 		g2d.drawOval(x, y, diameter, diameter);
 		g2d.setColor(colors[rand]);
 		g2d.fillOval(x, y, diameter, diameter);
+	}
+
+	/**
+	 * Override default toString method
+	 */
+	@Override
+	public String toString() {
+		return "Circle of radius " + (diameter / 2.0) + " located at point (" + (x + diameter / 2.0) + ", "
+				+ (y + diameter / 2.0) + ")";
 	}
 }
