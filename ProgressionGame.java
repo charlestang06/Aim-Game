@@ -41,16 +41,16 @@ public class ProgressionGame implements Runnable, Game {
 	private String cursor_string;
 
 	private double speed;
-	private int diam;
+	private double diam;
 
 	/**
 	 * Constructor for game initializes the start-screen, mainframe, score,
 	 * diameter counter, seconds past, and the game status
 	 */
-	public ProgressionGame(double s, int l, Dimension d, String cursor) {
+	public ProgressionGame(double s, int l, Dimension d, String cursor, double dim) {
 		status = true;
 		speed = s;
-		diam = 3;
+		diam = dim;
 		timer = null;
 		level = l;
 		dims = d;
@@ -88,7 +88,7 @@ public class ProgressionGame implements Runnable, Game {
 				String cmd = e.getActionCommand();
 				if (cmd.equals("Play")) {
 					startFrame.dispose();
-					ProgressionGame newGame = new ProgressionGame(speed, level, dims, cursor_string);
+					ProgressionGame newGame = new ProgressionGame(speed, level, dims, cursor_string, diam);
 					Thread gamethread = new Thread(newGame);
 					gamethread.start();
 				}
@@ -130,7 +130,8 @@ public class ProgressionGame implements Runnable, Game {
 				String cmd = e.getActionCommand();
 				if (cmd.equals("Continue")) {
 					endFrame.dispose();
-					ProgressionGame newGame = new ProgressionGame(speed + 1, level + 1, dims, cursor_string);
+					ProgressionGame newGame = new ProgressionGame(speed + 1, level + 1, dims, cursor_string,
+							diam - 0.2);
 					Thread gamethread = new Thread(newGame);
 					gamethread.start();
 				}
@@ -184,7 +185,7 @@ public class ProgressionGame implements Runnable, Game {
 				String cmd = e.getActionCommand();
 				if (cmd.equals("Try Again")) {
 					failFrame.dispose();
-					ProgressionGame newGame = new ProgressionGame(speed, level, dims, cursor_string);
+					ProgressionGame newGame = new ProgressionGame(speed, level, dims, cursor_string, diam);
 					Thread gamethread = new Thread(newGame);
 					gamethread.start();
 				}

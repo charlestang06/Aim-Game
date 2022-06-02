@@ -82,7 +82,7 @@ public class StartScreen {
 			public void actionPerformed(ActionEvent e) {
 				String cmd = e.getActionCommand();
 				if (cmd.equals("Levels")) {
-					ProgressionGame g = new ProgressionGame(2, 1, dims, cursor_string);
+					ProgressionGame g = new ProgressionGame(2, 1, dims, cursor_string, 4);
 					startFrame.dispose();
 					g.starterScreen();
 				}
