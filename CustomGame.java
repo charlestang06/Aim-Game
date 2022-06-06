@@ -341,6 +341,10 @@ public class CustomGame implements Runnable, Game {
 
 				}
 			});
+
+			// TODO: Space Bar listener -
+			// https://docs.oracle.com/javase/tutorial/uiswing/misc/keybinding.html
+
 			mainframe.getContentPane().add(c);
 			mainframe.setVisible(true);
 			wait((int) (50.0 / speed));
